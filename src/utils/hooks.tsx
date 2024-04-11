@@ -1,5 +1,5 @@
-const address = "0x5281cFc34aF3b26C392281ee4537A734E467dD15";
-import { abi } from "../abis/0x5281cFc34aF3b26C392281ee4537A734E467dD15";
+const address = "0x51b31be9C0AE43759992Ac75b0C48f72655b0F57";
+import { abi } from "../abis/0x51b31be9C0AE43759992Ac75b0C48f72655b0F57";
 import { useContractWrite } from "wagmi";
 
 export function useNFTFunctionwriter(

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useNFTFunctionwriter } from "../../utils/hooks";
 import axios from "axios";
 import { createPublicClient, http } from "viem";
-import { abi } from "../../abis/0x5281cFc34aF3b26C392281ee4537A734E467dD15";
+import { abi } from "../../abis/0x51b31be9C0AE43759992Ac75b0C48f72655b0F57";
 // import { useContractWrite, usePrepareContractWrite } from "wagmi";
 // import { abi } from "../../abis/0xb9Faa5947D00e7b1f9B6909cf6ACa10A927461F3";
 // type NftData = {
@@ -70,7 +70,7 @@ export const MintModal: React.FC<MintModalProps> = ({
   async function fetchData() {
     try {
       const result = (await client.readContract({
-        address: "0x5281cFc34aF3b26C392281ee4537A734E467dD15",
+        address: "0x51b31be9C0AE43759992Ac75b0C48f72655b0F57",
         abi: abi,
         functionName: "_tokenIds",
       })) as string; // Assuming the result should be a string

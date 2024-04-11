@@ -156,7 +156,7 @@ export const abi = [
   {
     inputs: [],
     name: "_tokenIds",
-    outputs: [{ internalType: "uint256", name: "_value", type: "uint256" }],
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -179,7 +179,7 @@ export const abi = [
   },
   {
     inputs: [
-      { internalType: "address", name: "_to", type: "address" },
+      { internalType: "address", name: "to", type: "address" },
       { internalType: "string", name: "tokenURI", type: "string" },
     ],
     name: "createToken",
@@ -195,7 +195,10 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      { internalType: "string", name: "name", type: "string" },
+      { internalType: "string", name: "symbol", type: "string" },
+    ],
     name: "initialize",
     outputs: [],
     stateMutability: "nonpayable",
@@ -209,6 +212,17 @@ export const abi = [
     name: "isApprovedForAll",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_creator", type: "address" },
+      { internalType: "address", name: "_to", type: "address" },
+      { internalType: "string", name: "_tokenURI", type: "string" },
+    ],
+    name: "mintAndTransfer",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
