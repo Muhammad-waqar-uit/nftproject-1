@@ -46,3 +46,4 @@ export default {
 - connectwallet Id for QR scan wallet connect
 - pinata JWT
 # frontendNFT
+# nftproject-1
