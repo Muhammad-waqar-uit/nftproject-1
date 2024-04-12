@@ -1,6 +1,7 @@
-const address = "0x51b31be9C0AE43759992Ac75b0C48f72655b0F57";
-import { abi } from "../abis/0x51b31be9C0AE43759992Ac75b0C48f72655b0F57";
-import { useContractWrite } from "wagmi";
+const address = "0xCeE2561869DbcB929e521284d2BF166d67818FFD";
+const ERC20address="0x52537989D0BBa01f7f18F0Ff4A410cb7BDE37D41";
+import { abi } from "../abis/0xCeE2561869DbcB929e521284d2BF166d67818FFD";
+import { useContractRead, useContractWrite } from "wagmi";
 
 export function useNFTFunctionwriter(
   functionName: string,
@@ -14,4 +15,25 @@ export function useNFTFunctionwriter(
   });
 
   return contractWrite;
+}
+
+export interface UseNFTFunctionReaderProps {
+  functionName: string;
+  args?: String[];
+}
+// create a generic hook to access read functions of contract
+export function useNFTFunctionReader({
+  functionName,
+  args, // Default to an empty array if 'args' is not provided
+}: UseNFTFunctionReaderProps): ReturnType<typeof useContractRead> {
+  const contractRead = useContractRead({
+    address: ERC20address,
+    abi: abi,
+    functionName: functionName,
+    args: args,
+    watch: true,
+    onError(error) {},
+  });
+
+  return contractRead;
 }

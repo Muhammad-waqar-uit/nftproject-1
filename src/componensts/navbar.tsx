@@ -7,55 +7,26 @@ import { Link } from "react-router-dom";
 import CreateProfileModal from "./CreateProfile";
 import Profile from "./Profile";
 import axios from "axios";
+import { useNFTFunctionReader } from "../utils/hooks";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const { address, isConnected } = useAccount();
+  const addressString = address ? address.toString() : ""; 
+  const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<any>({});
   const [openProfile, setOpenProfile] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  // const [isOverlayVisible, setIsOverlayVisible] = useState(false);
-  // const fetchUser = async () => {
-  //   try {
-  //     const res = await axios.get(
-  //       `http://localhost:5004/users/getsingleuser/${address}`
-  //     );
-  //     console.log("user res", res);
+  const { data: Ownerof } = useNFTFunctionReader({
+    functionName: "balanceOf",
+    args: [addressString],
+  });
 
-  //     // Check if user data is not available and the user is connected
-  //     if (!res.data && isConnected) {
-  //       // Open the modal only if the address is not stored in the database
-  //       setOpenModal(true);
-  //       // document.body.style.pointerEvents = "none";
-  //       // setIsOverlayVisible(true); // Show overlay
-  //     } else {
-  //       setOpenModal(false);
-  //       // document.body.style.pointerEvents = "auto";
-  //       // setIsOverlayVisible(false); // Hide overlay
-  //     }
-  //     // isDisconnected ? setOpenModal(false) : console.log("connected");
-
-  //     setData(res.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Check if the address is defined and not previously stored
-  //   // isDisconnected ? setOpenModal(false) : "";
-  //   if (address && localStorage.getItem("address") !== address) {
-  //     localStorage.setItem("address", address);
-  //     console.log("Hello");
-  //     fetchUser();
-  //   }
-  // }, [address]);
 
   const fetchUser = async () => {
     try {
       axios
         .get(
-          `https://project-nft-market-1-39k3.vercel.app/users/getsingleuser/${address}`
+          `https://nftproject-backend.vercel.app/users/getsingleuser/${address}`
         )
         .then((res) => {
           console.log(res);
@@ -158,9 +129,23 @@ function Navbar() {
               ""
             )}
           </div>
+          <a
+            className="text-white-200 mr-8 mt-4 block cursor-pointer
+            text-[1.6rem] font-bold hover:text-purple-600 active:text-red-500
+            lg:mt-0 lg:inline-block"
+          >
+            <Link to={`/MintTokens}`}>Mint Tokens</Link>
+          </a>
         </div>
+        <div className="p-2">
+            {isConnected ? (
+              <p className="text-xl text-black justify-center items-center bg-purple-500 rounded-3xl p-2">
+                ERC20 : {Ownerof?.toString().substring(0, 3)}...
+              </p>
+            ) : null}
+          </div>
         <div>
-          <ConnectKitButton />
+          <ConnectKitButton  showBalance/>
         </div>
       </div>
       {openProfile && <Profile />}

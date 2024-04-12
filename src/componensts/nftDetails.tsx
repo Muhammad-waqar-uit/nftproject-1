@@ -27,7 +27,7 @@ const NftDetailPage = () => {
     try {
       await axios
         .get(
-          `https://project-nft-market-1-39k3.vercel.app/nfts/getsinglenft/${params._id}`
+          `https://nftproject-backend.vercel.app/nfts/getsinglenft/${params._id}`
         )
         .then((res) => {
           console.log("Res", res.data);

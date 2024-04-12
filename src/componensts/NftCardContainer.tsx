@@ -17,7 +17,7 @@ const NftCardContainer = () => {
   async function fetchData() {
     try {
       await axios
-        .get("https://project-nft-market-1-39k3.vercel.app/nfts/getallnfts")
+        .get("https://nftproject-backend.vercel.app/nfts/getallnfts")
         .then((res) => {
           console.log("Res", res.data);
           setData(res.data);

@@ -22,7 +22,7 @@ export const MyNfts = () => {
     try {
       await axios
         .get(
-          `https://project-nft-market-1-39k3.vercel.app/nfts/getownersnfts/${params.ownerAddress}`
+          `https://nftproject-backend.vercel.app/nfts/getownersnfts/${params.ownerAddress}`
         )
         .then((res) => {
           console.log("Res", res.data);

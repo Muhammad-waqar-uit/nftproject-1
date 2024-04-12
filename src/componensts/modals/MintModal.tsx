@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useNFTFunctionwriter } from "../../utils/hooks";
 import axios from "axios";
 import { createPublicClient, http } from "viem";
-import { abi } from "../../abis/0x51b31be9C0AE43759992Ac75b0C48f72655b0F57";
+import { abi } from "../../abis/0xCeE2561869DbcB929e521284d2BF166d67818FFD";
 // import { useContractWrite, usePrepareContractWrite } from "wagmi";
 // import { abi } from "../../abis/0xb9Faa5947D00e7b1f9B6909cf6ACa10A927461F3";
 // type NftData = {
@@ -70,7 +70,7 @@ export const MintModal: React.FC<MintModalProps> = ({
   async function fetchData() {
     try {
       const result = (await client.readContract({
-        address: "0x51b31be9C0AE43759992Ac75b0C48f72655b0F57",
+        address: "0xCeE2561869DbcB929e521284d2BF166d67818FFD",
         abi: abi,
         functionName: "_tokenIds",
       })) as string; // Assuming the result should be a string
@@ -81,28 +81,30 @@ export const MintModal: React.FC<MintModalProps> = ({
     }
   }
 
-  let { isSuccess } = useWaitForTransaction({
+  let {isSuccess } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: async () => {
       let tokenId = await fetchData();
       let title = getNftDetails.title;
       let description = getNftDetails.description;
+      let txHash=data?.hash;
       console.log(
         title,
         description,
         tokenId,
         ownerAddress,
         attributes,
-        ipfsHash
-      );
+        ipfsHash,
+      txHash);
       await axios
-        .post("https://project-nft-market-1-39k3.vercel.app/nfts/createnft", {
+        .post("https://nftproject-backend.vercel.app/nfts/createnft", {
           title,
           description,
           ipfsHash,
           ownerAddress,
           tokenId,
           attributes,
+          txHash
         })
         .then((result) => console.log(result));
       console.log("Function on success completed");
