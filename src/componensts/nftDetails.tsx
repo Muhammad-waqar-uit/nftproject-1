@@ -10,6 +10,7 @@ type Data = {
   tokenId: string | null;
   ownerAddress: string | null;
   attributes: Array<object> | undefined;
+  txHash: string | null;
 };
 interface Attribute {
   trait_type: string;
@@ -57,14 +58,25 @@ const NftDetailPage = () => {
             />
             <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:py-6 lg:pl-10">
               <h1 className="title-font mb-1 text-3xl font-medium text-sky-400">
-                {data?.title}
+                Title: {data?.title}
               </h1>
 
               <p className="leading-relaxed text-gray-400">
-                {data?.description}
+                Description : {data?.description}
               </p>
-              <p className="leading-relaxed text-gray-400">
-                Owner Address: {data?.ownerAddress}
+              <p className="leading-relaxed text-gray-400 flex flex-row">
+                <a>Owner:</a>
+                <a className="px-2">{data?.ownerAddress}</a>
+              </p>
+              <p className="leading-relaxed text-gray-400 flex flex-row">
+                Tx Hash:{" "}
+                <a
+                  className="px-2 text-blue-500"
+                  target="_blank"
+                  href={`https://sepolia.etherscan.io/tx/` + data?.txHash}
+                >
+                  View onChain
+                </a>
               </p>
 
               <p className="leading-relaxed text-gray-400">

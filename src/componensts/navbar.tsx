@@ -11,7 +11,7 @@ import { useNFTFunctionReader } from "../utils/hooks";
 
 function Navbar() {
   const { address, isConnected } = useAccount();
-  const addressString = address ? address.toString() : ""; 
+  const addressString = address ? address.toString() : "";
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<any>({});
   const [openProfile, setOpenProfile] = useState(false);
@@ -20,7 +20,6 @@ function Navbar() {
     functionName: "balanceOf",
     args: [addressString],
   });
-
 
   const fetchUser = async () => {
     try {
@@ -134,18 +133,18 @@ function Navbar() {
             text-[1.6rem] font-bold hover:text-purple-600 active:text-red-500
             lg:mt-0 lg:inline-block"
           >
-            <Link to={`/MintTokens}`}>Mint Tokens</Link>
+            <Link to={`/MintTokens`}>Mint Tokens</Link>
           </a>
         </div>
         <div className="p-2">
-            {isConnected ? (
-              <p className="text-xl text-black justify-center items-center bg-purple-500 rounded-3xl p-2">
-                ERC20 : {Ownerof?.toString().substring(0, 3)}...
-              </p>
-            ) : null}
-          </div>
+          {isConnected ? (
+            <p className="text-xl text-black justify-center items-center bg-purple-500 rounded-3xl p-2">
+              ERC20 : {Ownerof?.toString().substring(0, 3)}...
+            </p>
+          ) : null}
+        </div>
         <div>
-          <ConnectKitButton  showBalance/>
+          <ConnectKitButton showBalance />
         </div>
       </div>
       {openProfile && <Profile />}
