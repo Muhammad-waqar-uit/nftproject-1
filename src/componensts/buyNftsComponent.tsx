@@ -10,9 +10,11 @@ type NftData = {
   ownerAddress: string;
   tokenId: string; // or string, depending on your use case
   attributes: Array<Object>; // or define a specific type for attributes if known
+  price: number;
+  txHash: string;
 };
 
-const NftCardContainer = () => {
+const BuyNftComponent = () => {
   const [data, setData] = useState<NftData[]>([]);
   async function fetchData() {
     try {
@@ -36,6 +38,11 @@ const NftCardContainer = () => {
     }
   }, [data]);
 
+  const filteredData =
+    data.length !== 0 && data.filter((res) => +res.price > 0);
+
+  console.log(filteredData, "filteredData");
+
   return (
     <section className="section explore" id="explore">
       <div className="container">
@@ -46,23 +53,24 @@ const NftCardContainer = () => {
         </div>
 
         <ul className="grid-list">
-          {data?.map((e, i) => {
-            return (
-              <li key={i}>
-                <NftCard
-                  src={e.ipfsHash}
-                  title={e.title}
-                  ownerAddress={e.ownerAddress}
-                  _id={e._id}
-                  ipfsHash={e.ipfsHash}
-                />
-              </li>
-            );
-          })}
+          {filteredData &&
+            filteredData?.map((e, i) => {
+              return (
+                <li key={i}>
+                  <NftCard
+                    src={e.ipfsHash}
+                    title={e.title}
+                    ownerAddress={e.ownerAddress}
+                    _id={e._id}
+                    ipfsHash={e.ipfsHash}
+                  />
+                </li>
+              );
+            })}
         </ul>
       </div>
     </section>
   );
 };
 
-export default NftCardContainer;
+export default BuyNftComponent;

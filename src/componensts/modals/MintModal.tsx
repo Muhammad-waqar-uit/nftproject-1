@@ -96,7 +96,7 @@ export const MintModal: React.FC<MintModalProps> = ({
         ipfsHash
       );
       await axios
-        .post("https://project-nft-market-1-39k3.vercel.app/nfts/createnft", {
+        .post("https://nftproject-backend.vercel.app/nfts/createnft", {
           title,
           description,
           ipfsHash,

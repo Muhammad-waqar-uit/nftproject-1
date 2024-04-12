@@ -11,7 +11,7 @@ const Profile = () => {
     try {
       axios
         .get(
-          `https://project-nft-market-1-39k3.vercel.app/users/getsingleuser/${address}`
+          `https://nftproject-backend.vercel.app/users/getsingleuser/${address}`
         )
         .then((res) => {
           console.log(res);

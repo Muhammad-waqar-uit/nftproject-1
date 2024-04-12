@@ -55,7 +55,7 @@ function Navbar() {
     try {
       axios
         .get(
-          `https://project-nft-market-1-39k3.vercel.app/users/getsingleuser/${address}`
+          `https://nftproject-backend.vercel.app/users/getsingleuser/${address}`
         )
         .then((res) => {
           console.log(res);
@@ -123,6 +123,13 @@ function Navbar() {
             // onClick={() => router.push("/exploreNfts")}
           >
             <Link to="/ExploreNfts">Explore Nfts</Link>
+          </a>
+          <a
+            // href="/exploreNfts"
+            className={`text-white-200 mr-8 mt-4 block cursor-pointer text-[1.6rem] font-bold hover:text-purple-600 active:text-red-500 lg:mt-0 lg:inline-block`}
+            // onClick={() => router.push("/exploreNfts")}
+          >
+            <Link to="/BuyNFTS">Active Nfts</Link>
           </a>
           <a
             // href="/createNft"
