@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useAccount } from "wagmi";
+import ListModal from "./modals/ListNft";
 
 type Data = {
   _id: string;
@@ -20,6 +21,7 @@ interface Attribute {
 }
 
 const NftDetailPage = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const { address } = useAccount();
   const [data, setData] = useState<Data | null>();
   // const [ownerAddress, setOwnerAddress] = useState();
@@ -132,7 +134,21 @@ const NftDetailPage = () => {
             </div>
             {data?.price !== 0 || data?.ownerAddress === address ? (
               <button className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded">
-                {data?.ownerAddress === userAddress ? "List Nft" : "Buy Nft"}
+                {data?.ownerAddress === address ? (
+                  <button
+                    onClick={() => {
+                      setModalOpen(true);
+                      console.log("hello");
+                    }}
+                    className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+                  >
+                    List NFT
+                  </button>
+                ) : (
+                  <button className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded">
+                    Buy NFT
+                  </button>
+                )}
               </button>
             ) : (
               <button
@@ -145,6 +161,7 @@ const NftDetailPage = () => {
           </div>
         </div>
       </section>
+      <ListModal isOpenProp={modalOpen} onClose={setModalOpen} />
     </>
   );
 };
