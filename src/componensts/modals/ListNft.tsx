@@ -3,18 +3,22 @@ import { useNFTFunctionwriter } from "../../utils/hooks";
 import { useWaitForTransaction } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { parseEther } from "viem";
+
 interface Props {
   isOpenProp: boolean;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   id: string | null | undefined;
+  _id: string | null | undefined;
 }
 
-const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id }) => {
+const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
   const [isOpen, setIsOpen] = useState(isOpenProp);
-  const [number, setNumber] = useState(0);
+  const [price, setNumber] = useState(0);
   let { writeAsync, data, isError } = useNFTFunctionwriter("listNft", [
-    id,
-    number,
+    String(id),
+    parseEther(String(price)),
   ]);
   let { isLoading } = useWaitForTransaction({
     hash: data?.hash,
@@ -41,6 +45,11 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id }) => {
     try {
       const tx = await writeAsync?.();
       console.log("Transaction", tx?.hash);
+      await axios
+        .put(`https://nftproject-backend.vercel.app/nfts/updatenft/${_id}`, {
+          price,
+        })
+        .then((result) => console.log(result.data));
       setNumber(0);
       toast("Listed Successfully!", {
         position: "top-right",
@@ -52,6 +61,7 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id }) => {
         progress: undefined,
         theme: "light",
       });
+      handleClose();
     } catch (error: any) {
       console.log("Error>>", error.message);
       setNumber(0);
@@ -96,7 +106,7 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id }) => {
         <p className="mb-4 text-black">Add price to list NFT.</p>
         <input
           type="number"
-          value={number}
+          value={price}
           onChange={handleNumberChange}
           min="0"
           className="w-full text-black border border-solid border-gray-600 rounded-md py-2 px-4 focus:outline-none focus:border-blue-400"

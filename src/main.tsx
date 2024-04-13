@@ -5,14 +5,14 @@ import "./index.css";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { sepolia } from "wagmi/chains";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
-import { infuraProvider } from "wagmi/providers/infura";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import Navbar from "./componensts/navbar";
 import Footer from "./componensts/footer.tsx";
 import { BrowserRouter } from "react-router-dom";
 
 const { webSocketPublicClient, publicClient } = configureChains(
   [sepolia],
-  [infuraProvider({ apiKey: import.meta.env.VITE_Infura })]
+  [alchemyProvider({ apiKey: import.meta.env.VITE_APP_Alchemy })]
 );
 const config = createConfig(
   getDefaultConfig({
@@ -21,7 +21,7 @@ const config = createConfig(
     chains: [sepolia],
     appName: "ConnectKit",
     walletConnectProjectId: import.meta.env.VITE_Wallet_Id,
-    infuraId: import.meta.env.VITE_Infura,
+    alchemyId: import.meta.env.VITE_APP_Alchemy,
     autoConnect: true,
   })
 );

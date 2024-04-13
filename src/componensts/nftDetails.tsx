@@ -165,6 +165,7 @@ const NftDetailPage = () => {
         isOpenProp={modalOpen}
         onClose={setModalOpen}
         id={data?.tokenId}
+        _id={data?._id}
       />
     </>
   );

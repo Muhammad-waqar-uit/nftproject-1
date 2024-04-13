@@ -74,20 +74,20 @@ export const MintModal: React.FC<MintModalProps> = ({
         abi: abi,
         functionName: "_tokenIds",
       })) as string; // Assuming the result should be a string
-      let value = Number(result) + 1;
+      let value = Number(result);
       return value;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
 
-  let {isSuccess } = useWaitForTransaction({
+  let { isSuccess } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: async () => {
       let tokenId = await fetchData();
       let title = getNftDetails.title;
       let description = getNftDetails.description;
-      let txHash=data?.hash;
+      let txHash = data?.hash;
       console.log(
         title,
         description,
@@ -95,7 +95,8 @@ export const MintModal: React.FC<MintModalProps> = ({
         ownerAddress,
         attributes,
         ipfsHash,
-      txHash);
+        txHash
+      );
       await axios
         .post("https://nftproject-backend.vercel.app/nfts/createnft", {
           title,
@@ -104,7 +105,7 @@ export const MintModal: React.FC<MintModalProps> = ({
           ownerAddress,
           tokenId,
           attributes,
-          txHash
+          txHash,
         })
         .then((result) => console.log(result));
       console.log("Function on success completed");
