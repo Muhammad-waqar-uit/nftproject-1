@@ -89,14 +89,11 @@ const MintTokens = () => {
           onChange={(e) => setAmount(e.target.value)}
         />
         {isConnected ? (
-          <button
-            className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600"
-            onClick={handleMinting}
-          >
+          <button className="btn w-full " onClick={handleMinting}>
             {isLoading ? "Minting ...." : "Mint Tokens"}
           </button>
         ) : (
-          <p className="w-full bg-blue-500  text-white py-3 rounded-md flex justify-center items-center hover:bg-blue-600">
+          <p className="disableBtn w-full flex justify-center items-center">
             Connect First
           </p>
         )}
