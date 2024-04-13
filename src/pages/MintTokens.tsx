@@ -68,10 +68,17 @@ const MintTokens = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-purple-500 p-8 rounded-lg shadow-md w-80">
-        <h2 className="text-2xl font-semibold mb-4 text-black">
-          Token Minting
+    <section className="section explore mb-5" id="explore">
+      <div className="container">
+        <p className="section-subtitle">Exclusive Tokens</p>
+
+        <div className="title-wrapper">
+          <h2 className="h2 section-title">Mint Tokens</h2>
+        </div>
+        {/* <div className="flex justify-center items-center h-screen"> */}
+        {/* <div className="bg-purple-500 p-8 rounded-lg shadow-md w-80"> */}
+        <h2 className="text-2xl font-semibold mb-4 text-white">
+          Mint tokens and enjoy shopping.
         </h2>
         <input
           type="number"
@@ -98,22 +105,24 @@ const MintTokens = () => {
         ) : (
           ""
         )}
+        {/* </div> */}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        {/* Same as */}
+        <ToastContainer />
+        {/* </div> */}
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-      {/* Same as */}
-      <ToastContainer />
-    </div>
+    </section>
   );
 };
 

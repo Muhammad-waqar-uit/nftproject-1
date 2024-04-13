@@ -114,6 +114,13 @@ function Navbar() {
           >
             <Link to={`/MyNfts/${address}`}>My Nfts</Link>
           </a>
+          <a
+            className="text-white-200 mr-8 mt-4 block cursor-pointer
+            text-[1.6rem] font-bold hover:text-purple-600 active:text-red-500
+            lg:mt-0 lg:inline-block"
+          >
+            <Link to={`/MintTokens`}>Mint Tokens</Link>
+          </a>
           <div
             className="text-white-200 mr-8 mt-4 block cursor-pointer
             text-[1.6rem] font-bold hover:text-purple-600 active:text-red-500
@@ -135,13 +142,6 @@ function Navbar() {
               ""
             )}
           </div>
-          <a
-            className="text-white-200 mr-8 mt-4 block cursor-pointer
-            text-[1.6rem] font-bold hover:text-purple-600 active:text-red-500
-            lg:mt-0 lg:inline-block"
-          >
-            <Link to={`/MintTokens`}>Mint Tokens</Link>
-          </a>
         </div>
         <div className="p-2">
           {isConnected ? (
