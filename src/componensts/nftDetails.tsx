@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useAccount } from "wagmi";
 
 type Data = {
   _id: string;
@@ -19,6 +20,7 @@ interface Attribute {
 }
 
 const NftDetailPage = () => {
+  const { address } = useAccount();
   const [data, setData] = useState<Data | null>();
   // const [ownerAddress, setOwnerAddress] = useState();
   // const [tokenId, setTokenId] = useState();
@@ -128,9 +130,16 @@ const NftDetailPage = () => {
                 </div>
               </p>
             </div>
-            {data?.price === 0 && (
+            {data?.price !== 0 || data?.ownerAddress === address ? (
               <button className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded">
-                Buy Nft
+                {data?.ownerAddress === userAddress ? "List Nft" : "Buy Nft"}
+              </button>
+            ) : (
+              <button
+                disabled={true}
+                className="flex mt-4 disabled:bg-gray-400 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+              >
+                Not Listed for sale
               </button>
             )}
           </div>

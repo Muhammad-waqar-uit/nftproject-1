@@ -7,6 +7,7 @@ type AppProps = {
   ownerAddress: any | null;
   _id: string;
   ipfsHash: string;
+  isforList?: boolean;
 };
 const NftCard = (props: AppProps) => {
   return (

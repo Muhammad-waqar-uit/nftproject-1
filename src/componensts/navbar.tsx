@@ -55,7 +55,7 @@ function Navbar() {
         <Link to="/">
           <img
             src={logoImage}
-            className="h-15 mr-2 w-80 cursor-pointer"
+            className="h-15 mr-2 w-40 cursor-pointer"
             alt=""
           />
         </Link>
