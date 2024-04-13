@@ -5,7 +5,9 @@ import { MainPage } from "./pages/MainPage";
 import { ExploreNFTs } from "./pages/ExploreNFTs";
 import { MyNfts } from "./pages/MyNfts";
 import NftDetailPage from "./componensts/nftDetails";
+
 import MintTokens from "./pages/MintTokens";
+import { BuyNFTS } from "./pages/BuyNFTs";
 function App() {
   return (
     <>
@@ -17,6 +19,7 @@ function App() {
           <Route path="/MyNfts/:ownerAddress" element={<MyNfts />}></Route>
           <Route path="/:_id" element={<NftDetailPage />}></Route>
           <Route path="/MintTokens" element={<MintTokens />}></Route>
+          <Route path="/BuyNFTS" element={<BuyNFTS />}></Route>
         </Routes>
       </div>
     </>

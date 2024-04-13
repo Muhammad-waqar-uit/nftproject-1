@@ -95,6 +95,13 @@ function Navbar() {
             <Link to="/ExploreNfts">Explore Nfts</Link>
           </a>
           <a
+            // href="/exploreNfts"
+            className={`text-white-200 mr-8 mt-4 block cursor-pointer text-[1.6rem] font-bold hover:text-purple-600 active:text-red-500 lg:mt-0 lg:inline-block`}
+            // onClick={() => router.push("/exploreNfts")}
+          >
+            <Link to="/BuyNFTS">Active Nfts</Link>
+          </a>
+          <a
             // href="/createNft"
             className="text-white-200 mr-8 mt-4 block cursor-pointer text-[1.6rem] font-bold hover:text-purple-600 active:text-red-500 lg:mt-0 lg:inline-block"
           >

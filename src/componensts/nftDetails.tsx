@@ -11,6 +11,7 @@ type Data = {
   ownerAddress: string | null;
   attributes: Array<object> | undefined;
   txHash: string | null;
+  price: number;
 };
 interface Attribute {
   trait_type: string;
@@ -53,7 +54,7 @@ const NftDetailPage = () => {
           <div className="mx-auto flex flex-wrap lg:w-4/5">
             <img
               alt="ecommerce"
-              className="w-full rounded border border-gray-200 object-cover object-center lg:w-1/2"
+              className="rounded border border-gray-200 w-[100%] mx-h-[100%] lg:w-1/2"
               src={`https://ipfs.io/ipfs/${data?.ipfsHash}`}
             />
             <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:py-6 lg:pl-10">
@@ -127,6 +128,11 @@ const NftDetailPage = () => {
                 </div>
               </p>
             </div>
+            {data?.price === 0 && (
+              <button className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded">
+                Buy Nft
+              </button>
+            )}
           </div>
         </div>
       </section>
