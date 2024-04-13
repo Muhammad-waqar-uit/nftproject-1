@@ -192,18 +192,19 @@ body {
   font-weight: var(--fw-700);
   border: 2px solid var(--white);
   padding: var(--padding, 4px 10px);
-  border-radius: 50px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   gap: 5px;
 }
+
 
 .disableBtn {
   color: var(--white);
   font-weight: var(--fw-700);
   /* border: 2px solid var(--white); */
   padding: var(--padding, 4px 10px);
-  border-radius: 50px;
+  border-radius: 5px;
   background-color: gray;
   display: flex;
   align-items: center;
