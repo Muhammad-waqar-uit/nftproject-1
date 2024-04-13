@@ -38,7 +38,7 @@ const NftDetailPage = () => {
     isError: isApproveErcError,
   } = useNFTFunctionwriterERC("approve", [
     "0xCeE2561869DbcB929e521284d2BF166d67818FFD",
-    parseEther(String(data?.price)),
+    parseEther(String(data?.price || "0")),
   ]);
 
   let { isLoading } = useWaitForTransaction({
@@ -50,7 +50,7 @@ const NftDetailPage = () => {
     isError,
   } = useNFTFunctionwriter("buy", [
     String(data?.tokenId),
-    parseEther(String(data?.price)),
+    parseEther(String(data?.price || "0")),
   ]);
 
   let { isLoading: isLoader } = useWaitForTransaction({
