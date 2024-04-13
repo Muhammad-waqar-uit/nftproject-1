@@ -8,7 +8,7 @@ import CreateProfileModal from "./CreateProfile";
 import Profile from "./Profile";
 import axios from "axios";
 import { useNFTFunctionReader } from "../utils/hooks";
-
+import { formatEther } from "viem";
 function Navbar() {
   const { address, isConnected } = useAccount();
   const addressString = address ? address.toString() : "";
@@ -139,7 +139,10 @@ function Navbar() {
         <div className="p-2">
           {isConnected ? (
             <p className="text-xl text-black justify-center items-center bg-purple-500 rounded-3xl p-2">
-              ERC20 : {Ownerof?.toString().substring(0, 3)}...
+              ERC20 :
+              {address
+                ? formatEther(BigInt(String(Ownerof || "0")))
+                : "Loading"}
             </p>
           ) : null}
         </div>
