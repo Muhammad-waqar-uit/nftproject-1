@@ -27,7 +27,7 @@ interface Attribute {
 
 const NftDetailPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { address, isConnected } = useAccount();
+  const { address: ownerAddress, isConnected } = useAccount();
   const [data, setData] = useState<Data | null>();
 
   const params = useParams();
@@ -49,12 +49,25 @@ const NftDetailPage = () => {
     data: buyfunctionData,
     isError,
   } = useNFTFunctionwriter("buy", [
-    String(data?.tokenId),
+    data?.tokenId,
     parseEther(String(data?.price || "0")),
   ]);
 
   let { isLoading: isLoader } = useWaitForTransaction({
     hash: buyfunctionData?.hash,
+    onSuccess: () => {
+      toast("NFT Bought Successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      window.location.reload();
+    },
   });
   // const { isConnected, address } = useAccount();
   async function fetchData() {
@@ -83,28 +96,22 @@ const NftDetailPage = () => {
     try {
       const tx1 = await ERCwriteAsync?.();
       console.log("Approved", tx1?.hash);
-      const tx = await writeAsync?.();
-      console.log("Transaction", tx?.hash);
-      let price = 0;
-      await axios
-        .put(
-          `https://nftproject-backend.vercel.app/nfts/updatenft/${data?._id}`,
-          {
-            price,
-            address,
-          }
-        )
-        .then((result) => console.log(result.data));
-      toast("NFT Bought Successfully!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+
+      // Proceed with the second transaction only if the first one is successful
+      if (tx1) {
+        const tx = await writeAsync?.();
+        console.log("Transaction", tx?.hash);
+        let price = 0;
+        await axios
+          .put(
+            `https://nftproject-backend.vercel.app/nfts/updatenft/${data?._id}`,
+            {
+              price,
+              ownerAddress,
+            }
+          )
+          .then((result) => console.log(result.data));
+      }
     } catch (error: any) {
       console.log("Error>>", error.message);
       toast.error("Error Buying!", {
@@ -119,6 +126,7 @@ const NftDetailPage = () => {
       });
     }
   }
+
   return (
     <>
       <section className="body-font card explore-card overflow-hidden bg-white text-gray-700">
@@ -200,44 +208,55 @@ const NftDetailPage = () => {
                 </div>
               </p>
             </div>
-            {data?.price !== 0 || data?.ownerAddress === address ? (
-              <div className="flex m-2 ml-auto text-white bg-sky-400 border-0 focus:outline-none hover:bg-sky-600 rounded">
-                {data?.ownerAddress === address ? (
-                  <button
-                    onClick={() => {
-                      setModalOpen(true);
-                      console.log("hello");
-                    }}
-                    className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
-                  >
-                    List NFT
-                  </button>
+            {isConnected && (
+              <>
+                {" "}
+                {data?.price !== 0 || data?.ownerAddress === ownerAddress ? (
+                  <>
+                    {data?.ownerAddress === ownerAddress &&
+                    data?.price === 0 ? (
+                      <button
+                        onClick={() => {
+                          setModalOpen(true);
+                          console.log("hello");
+                        }}
+                        className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+                      >
+                        List NFT
+                      </button>
+                    ) : (
+                      data?.ownerAddress !== ownerAddress && (
+                        <button
+                          onClick={buyNFT}
+                          className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+                        >
+                          {isLoader || isLoading ? "Buying...." : "Buy NFT"}
+                        </button>
+                      )
+                    )}
+                    {isApproveErcError ? (
+                      <p className="text-red-500 text-xl">
+                        {" "}
+                        Check your balance
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                    {isError ? (
+                      <p className="text-red-500 text-xl"> Error in buying</p>
+                    ) : (
+                      ""
+                    )}
+                  </>
                 ) : (
                   <button
-                    onClick={buyNFT}
-                    className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+                    disabled={true}
+                    className="flex mt-4 disabled:bg-gray-400 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
                   >
-                    {isLoader || isLoading ? "Buying...." : "Buy NFT"}
+                    Not Listed for sale
                   </button>
                 )}
-                {isApproveErcError ? (
-                  <p className="text-red-500 text-xl"> Check your balance</p>
-                ) : (
-                  ""
-                )}
-                {isError ? (
-                  <p className="text-red-500 text-xl"> Error in buying</p>
-                ) : (
-                  ""
-                )}
-              </div>
-            ) : (
-              <button
-                disabled={true}
-                className="flex mt-4 disabled:bg-gray-400 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
-              >
-                Not Listed for sale
-              </button>
+              </>
             )}
           </div>
         </div>

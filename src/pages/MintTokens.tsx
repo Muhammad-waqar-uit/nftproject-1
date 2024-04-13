@@ -15,14 +15,8 @@ const MintTokens = () => {
   );
   let { isLoading } = useWaitForTransaction({
     hash: data?.hash,
-  });
-  const mintTokens = async () => {
-    console.log("Minting " + amount + " tokens...");
-    try {
-      const tx = await writeAsync?.();
-      console.log("Transaction", tx?.hash);
-      setAmount("");
-      toast("Mint Successfully!", {
+    onSuccess: () => {
+      toast("Minted Successfully!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -32,6 +26,14 @@ const MintTokens = () => {
         progress: undefined,
         theme: "light",
       });
+    },
+  });
+  const mintTokens = async () => {
+    console.log("Minting " + amount + " tokens...");
+    try {
+      const tx = await writeAsync?.();
+      console.log("Transaction", tx?.hash);
+      setAmount("");
     } catch (error: any) {
       console.log("Error>>", error.message);
       setAmount("");

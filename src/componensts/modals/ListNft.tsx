@@ -22,7 +22,21 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
   ]);
   let { isLoading } = useWaitForTransaction({
     hash: data?.hash,
+    onSuccess: () => {
+      toast("Listed Successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      window.location.reload();
+    },
   });
+
   // Update isOpen state when isOpenProp changes
   useEffect(() => {
     setIsOpen(isOpenProp);
@@ -51,16 +65,6 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
         })
         .then((result) => console.log(result.data));
       setNumber(0);
-      toast("Listed Successfully!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       handleClose();
     } catch (error: any) {
       console.log("Error>>", error.message);
