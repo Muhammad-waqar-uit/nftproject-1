@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useAccount } from "wagmi";
+import { useAccount, useWaitForTransaction } from "wagmi";
 import ListModal from "./modals/ListNft";
 import ModelLoader from "./modals/Loader";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import { useNFTFunctionwriter, useNFTFunctionwriterERC } from "../utils/hooks";
+import { parseEther } from "viem";
 
 type Data = {
   _id: string;
@@ -25,12 +27,35 @@ interface Attribute {
 
 const NftDetailPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [isLoader, setIsLoader] = useState<boolean>(false);
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [data, setData] = useState<Data | null>();
 
   const params = useParams();
 
+  let {
+    writeAsync: ERCwriteAsync,
+    data: approveErcdata,
+    isError: isApproveErcError,
+  } = useNFTFunctionwriterERC("approve", [
+    "0xCeE2561869DbcB929e521284d2BF166d67818FFD",
+    parseEther(String(data?.price)),
+  ]);
+
+  let { isLoading } = useWaitForTransaction({
+    hash: approveErcdata?.hash,
+  });
+  let {
+    writeAsync,
+    data: buyfunctionData,
+    isError,
+  } = useNFTFunctionwriter("buy", [
+    String(data?.tokenId),
+    parseEther(String(data?.price)),
+  ]);
+
+  let { isLoading: isLoader } = useWaitForTransaction({
+    hash: buyfunctionData?.hash,
+  });
   // const { isConnected, address } = useAccount();
   async function fetchData() {
     try {
@@ -54,19 +79,46 @@ const NftDetailPage = () => {
     fetchData();
   }, []);
 
-  // Yeh jab success hojaye function or api tab yeh lgana hai... or api contract k function success hony py lagani hai... setIsloader true krana pehly, phr false kra dena.
-
-  // toast("Nft Transferred to you successfully!", {
-  //   position: "top-right",
-  //   autoClose: 5000,
-  //   hideProgressBar: false,
-  //   closeOnClick: true,
-  //   pauseOnHover: true,
-  //   draggable: true,
-  //   progress: undefined,
-  //   theme: "light",
-  // });
-
+  async function buyNFT() {
+    try {
+      const tx1 = await ERCwriteAsync?.();
+      console.log("Approved", tx1?.hash);
+      const tx = await writeAsync?.();
+      console.log("Transaction", tx?.hash);
+      let price = 0;
+      await axios
+        .put(
+          `https://nftproject-backend.vercel.app/nfts/updatenft/${data?._id}`,
+          {
+            price,
+            address,
+          }
+        )
+        .then((result) => console.log(result.data));
+      toast("NFT Bought Successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error: any) {
+      console.log("Error>>", error.message);
+      toast.error("Error Buying!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
   return (
     <>
       <section className="body-font card explore-card overflow-hidden bg-white text-gray-700">
@@ -161,9 +213,22 @@ const NftDetailPage = () => {
                     List NFT
                   </button>
                 ) : (
-                  <button className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded">
-                    Buy NFT
+                  <button
+                    onClick={buyNFT}
+                    className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+                  >
+                    {isLoader || isLoading ? "Buying...." : "Buy NFT"}
                   </button>
+                )}
+                {isApproveErcError ? (
+                  <p className="text-red-500 text-xl"> Check your balance</p>
+                ) : (
+                  ""
+                )}
+                {isError ? (
+                  <p className="text-red-500 text-xl"> Error in buying</p>
+                ) : (
+                  ""
                 )}
               </div>
             ) : (
@@ -184,11 +249,13 @@ const NftDetailPage = () => {
         id={data?.tokenId}
         _id={data?._id}
       />
-      {isLoader && (
+      {isLoader ? (
         <ModelLoader
           type="loader"
           loaderText="Processing your request to buy nft..."
         />
+      ) : (
+        ""
       )}
       <ToastContainer
         position="top-right"
