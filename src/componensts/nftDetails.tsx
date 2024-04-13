@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useAccount } from "wagmi";
 import ListModal from "./modals/ListNft";
+import ModelLoader from "./modals/Loader";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 type Data = {
   _id: string;
@@ -22,10 +25,10 @@ interface Attribute {
 
 const NftDetailPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
   const { address } = useAccount();
   const [data, setData] = useState<Data | null>();
-  // const [ownerAddress, setOwnerAddress] = useState();
-  // const [tokenId, setTokenId] = useState();
+
   const params = useParams();
 
   // const { isConnected, address } = useAccount();
@@ -50,6 +53,19 @@ const NftDetailPage = () => {
 
     fetchData();
   }, []);
+
+  // Yeh jab success hojaye function or api tab yeh lgana hai... or api contract k function success hony py lagani hai... setIsloader true krana pehly, phr false kra dena.
+
+  // toast("Nft Transferred to you successfully!", {
+  //   position: "top-right",
+  //   autoClose: 5000,
+  //   hideProgressBar: false,
+  //   closeOnClick: true,
+  //   pauseOnHover: true,
+  //   draggable: true,
+  //   progress: undefined,
+  //   theme: "light",
+  // });
 
   return (
     <>
@@ -161,12 +177,33 @@ const NftDetailPage = () => {
           </div>
         </div>
       </section>
+
       <ListModal
         isOpenProp={modalOpen}
         onClose={setModalOpen}
         id={data?.tokenId}
         _id={data?._id}
       />
+      {isLoader && (
+        <ModelLoader
+          type="loader"
+          loaderText="Processing your request to buy nft..."
+        />
+      )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Same as */}
+      <ToastContainer />
     </>
   );
 };
