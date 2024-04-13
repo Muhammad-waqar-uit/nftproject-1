@@ -133,7 +133,7 @@ const NftDetailPage = () => {
               </p>
             </div>
             {data?.price !== 0 || data?.ownerAddress === address ? (
-              <button className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded">
+              <div className="flex m-2 ml-auto text-white bg-sky-400 border-0 focus:outline-none hover:bg-sky-600 rounded">
                 {data?.ownerAddress === address ? (
                   <button
                     onClick={() => {
@@ -149,7 +149,7 @@ const NftDetailPage = () => {
                     Buy NFT
                   </button>
                 )}
-              </button>
+              </div>
             ) : (
               <button
                 disabled={true}
@@ -161,7 +161,11 @@ const NftDetailPage = () => {
           </div>
         </div>
       </section>
-      <ListModal isOpenProp={modalOpen} onClose={setModalOpen} />
+      <ListModal
+        isOpenProp={modalOpen}
+        onClose={setModalOpen}
+        id={data?.tokenId}
+      />
     </>
   );
 };
