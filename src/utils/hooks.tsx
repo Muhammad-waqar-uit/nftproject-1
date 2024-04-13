@@ -48,7 +48,6 @@ export function useNFTFunctionReader({
     functionName: functionName,
     args: args,
     watch: true,
-    onError(error) {},
   });
 
   return contractRead;
