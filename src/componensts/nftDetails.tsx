@@ -83,7 +83,6 @@ const NftDetailPage = () => {
         theme: "light",
       });
       setIsloader(false);
-      window.location.reload();
     },
   });
 

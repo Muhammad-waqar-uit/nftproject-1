@@ -15,6 +15,7 @@ interface Props {
 }
 
 const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
+  const [isLoader, setIsLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(isOpenProp);
   const [price, setNumber] = useState(0);
   let { writeAsync, data, isError } = useNFTFunctionwriter("listNft", [
@@ -34,6 +35,7 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
         progress: undefined,
         theme: "light",
       });
+      setIsLoader(false);
       window.location.reload();
     },
   });
@@ -58,6 +60,7 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
 
   async function ListNFT() {
     try {
+      setIsLoader(true);
       const tx = await writeAsync?.();
       console.log("Transaction", tx?.hash);
       await axios
@@ -142,7 +145,7 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
       />
       {/* Same as */}
       <ToastContainer />
-      {isLoading ? (
+      {isLoader ? (
         <ModelLoader
           type="loader"
           loaderText="Processing your request to list nft..."
