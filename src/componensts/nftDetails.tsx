@@ -216,60 +216,64 @@ const NftDetailPage = () => {
                     <p>No attributes available</p>
                   )}
                 </div>
-              </p>
-            </div>
-            {isConnected && (
-              <>
-                {" "}
-                {data?.price !== 0 || data?.ownerAddress === ownerAddress ? (
+                {isConnected && (
                   <>
-                    {data?.ownerAddress === ownerAddress &&
-                    data?.price === 0 ? (
+                    {" "}
+                    {data?.price !== 0 ||
+                    data?.ownerAddress === ownerAddress ? (
+                      <>
+                        {data?.ownerAddress === ownerAddress &&
+                        data?.price === 0 ? (
+                          <button
+                            onClick={() => {
+                              setModalOpen(true);
+                              console.log("hello");
+                            }}
+                            className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+                          >
+                            List NFT
+                          </button>
+                        ) : (
+                          data?.ownerAddress !== ownerAddress && (
+                            <button
+                              onClick={buyNFT}
+                              className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+                            >
+                              {isLoader || isLoading
+                                ? "wait Buying...."
+                                : "Buy NFT"}
+                            </button>
+                          )
+                        )}
+                        {isApproveErcError ? (
+                          <p className="text-red-500 text-xl">
+                            {" "}
+                            Check your balance
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                        {isError ? (
+                          <p className="text-red-500 text-xl">
+                            {" "}
+                            Error in buying
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    ) : (
                       <button
-                        onClick={() => {
-                          setModalOpen(true);
-                          console.log("hello");
-                        }}
-                        className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
+                        disabled={true}
+                        className="flex mt-4 disabled:bg-gray-400 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
                       >
-                        List NFT
+                        Not Listed for sale
                       </button>
-                    ) : (
-                      data?.ownerAddress !== ownerAddress && (
-                        <button
-                          onClick={buyNFT}
-                          className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
-                        >
-                          {isLoader || isLoading
-                            ? "wait Buying...."
-                            : "Buy NFT"}
-                        </button>
-                      )
-                    )}
-                    {isApproveErcError ? (
-                      <p className="text-red-500 text-xl">
-                        {" "}
-                        Check your balance
-                      </p>
-                    ) : (
-                      ""
-                    )}
-                    {isError ? (
-                      <p className="text-red-500 text-xl"> Error in buying</p>
-                    ) : (
-                      ""
                     )}
                   </>
-                ) : (
-                  <button
-                    disabled={true}
-                    className="flex mt-4 disabled:bg-gray-400 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
-                  >
-                    Not Listed for sale
-                  </button>
                 )}
-              </>
-            )}
+              </p>
+            </div>
           </div>
         </div>
       </section>
