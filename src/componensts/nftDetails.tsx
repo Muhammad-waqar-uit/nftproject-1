@@ -8,8 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { useNFTFunctionwriter, useNFTFunctionwriterERC } from "../utils/hooks";
 import { parseEther } from "viem";
-import { ethers } from "ethers";
-import { abi } from "../abis/0x52537989D0BBa01f7f18F0Ff4A410cb7BDE37D41";
 
 type Data = {
   _id: string;
@@ -89,16 +87,6 @@ const NftDetailPage = () => {
     },
   });
 
-  const provider = new ethers.AlchemyProvider(
-    "sepolia",
-    import.meta.env.VITE_Alchemy
-  );
-  async function fetchApproval() {
-    const address = "0x52537989D0BBa01f7f18F0Ff4A410cb7BDE37D41";
-    const contract = new ethers.Contract(address, abi, provider);
-    const data = await contract.allowance(ownerAddress, address);
-    return String(data);
-  }
   // const { isConnected, address } = useAccount();
   async function fetchData() {
     try {
