@@ -69,7 +69,7 @@ const NftDetailPage = () => {
     parseEther(String(data?.price || "0")),
   ]);
 
-  let { isLoading: loadernft } = useWaitForTransaction({
+  let {} = useWaitForTransaction({
     hash: buyfunctionData?.hash,
     onSuccess: () => {
       toast("NFT Bought Successfully!", {
