@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { parseEther } from "viem";
 import ModelLoader from "./Loader";
-
+import { useNavigate } from "react-router-dom";
 interface Props {
   isOpenProp: boolean;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +15,8 @@ interface Props {
 }
 
 const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
+  const navigate = useNavigate();
+
   const [isLoader, setIsLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(isOpenProp);
   const [price, setNumber] = useState(0);
@@ -36,7 +38,7 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
         theme: "light",
       });
       setIsLoader(false);
-      window.location.reload();
+      navigate("/BuyNFTS");
     },
   });
 

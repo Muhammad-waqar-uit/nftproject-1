@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { useNFTFunctionwriter, useNFTFunctionwriterERC } from "../utils/hooks";
 import { parseEther } from "viem";
-
+import { useNavigate } from "react-router-dom";
 type Data = {
   _id: string;
   title: string;
@@ -26,6 +26,7 @@ interface Attribute {
 }
 
 const NftDetailPage = () => {
+  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const { address: ownerAddress, isConnected } = useAccount();
   const [isLoader, setIsloader] = useState(false);
@@ -83,6 +84,7 @@ const NftDetailPage = () => {
         theme: "light",
       });
       setIsloader(false);
+      navigate(`/MyNfts/${ownerAddress}`);
     },
   });
 
