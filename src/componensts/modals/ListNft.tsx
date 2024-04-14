@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { parseEther } from "viem";
+import ModelLoader from "./Loader";
 
 interface Props {
   isOpenProp: boolean;
@@ -141,6 +142,14 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
       />
       {/* Same as */}
       <ToastContainer />
+      {isLoading ? (
+        <ModelLoader
+          type="loader"
+          loaderText="Processing your request to list nft..."
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

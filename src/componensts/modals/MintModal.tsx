@@ -3,26 +3,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ImageUploader from "../../utils/ImageUploadIpfs";
 import metaData from "../../utils/MetaDataUpload";
-import { sepolia, useAccount, useWaitForTransaction } from "wagmi";
+import { useAccount, useWaitForTransaction } from "wagmi";
 import { Link } from "react-router-dom";
 import { useNFTFunctionwriter } from "../../utils/hooks";
 import axios from "axios";
-import { createPublicClient, http } from "viem";
 import { abi } from "../../abis/0xCeE2561869DbcB929e521284d2BF166d67818FFD";
-// import { useContractWrite, usePrepareContractWrite } from "wagmi";
-// import { abi } from "../../abis/0xb9Faa5947D00e7b1f9B6909cf6ACa10A927461F3";
-// type NftData = {
-//   title: string;
-//   description: string;
-//   ipfsHash: string;
-//   ownerAddress: string;
-//   tokenId: string; // or string, depending on your use case
-//   attributes: Array<Object>; // or define a specific type for attributes if known
-// };
-const client = createPublicClient({
-  chain: sepolia,
-  transport: http(),
-});
+import { ethers } from "ethers";
 
 interface DataObject {
   trait_type: string;
@@ -66,28 +52,28 @@ export const MintModal: React.FC<MintModalProps> = ({
     "createToken",
     [ownerAddress, tokenUri]
   );
+
+  const provider = new ethers.AlchemyProvider(
+    "sepolia",
+    import.meta.env.VITE_Alchemy
+  );
   // Assuming a specific type for the result, change 'SpecificType' to the actual type.
   async function fetchData() {
-    try {
-      const result = (await client.readContract({
-        address: "0xCeE2561869DbcB929e521284d2BF166d67818FFD",
-        abi: abi,
-        functionName: "_tokenIds",
-      })) as string; // Assuming the result should be a string
-      let value = Number(result);
-      return value;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    const address = "0xCeE2561869DbcB929e521284d2BF166d67818FFD";
+    const contract = new ethers.Contract(address, abi, provider);
+    const data = await contract._tokenIds();
+    return String(data);
   }
 
   let { isSuccess } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 4000));
       let tokenId = await fetchData();
       let title = getNftDetails.title;
       let description = getNftDetails.description;
       let txHash = data?.hash;
+
       console.log(
         title,
         description,

@@ -12,7 +12,7 @@ import { BrowserRouter } from "react-router-dom";
 
 const { webSocketPublicClient, publicClient } = configureChains(
   [sepolia],
-  [alchemyProvider({ apiKey: import.meta.env.VITE_APP_Alchemy })]
+  [alchemyProvider({ apiKey: import.meta.env.VITE_Alchemy })]
 );
 const config = createConfig(
   getDefaultConfig({
@@ -21,7 +21,7 @@ const config = createConfig(
     chains: [sepolia],
     appName: "ConnectKit",
     walletConnectProjectId: import.meta.env.VITE_Wallet_Id,
-    alchemyId: import.meta.env.VITE_APP_Alchemy,
+    alchemyId: import.meta.env.VITE_Alchemy,
     autoConnect: true,
   })
 );

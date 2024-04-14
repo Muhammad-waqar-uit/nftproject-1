@@ -91,7 +91,10 @@ const MintTokens = () => {
           onChange={(e) => setAmount(e.target.value)}
         />
         {isConnected ? (
-          <button className="btn w-full " onClick={handleMinting}>
+          <button
+            className="btn w-full flex justify-center items-center"
+            onClick={handleMinting}
+          >
             {isLoading ? "Minting ...." : "Mint Tokens"}
           </button>
         ) : (

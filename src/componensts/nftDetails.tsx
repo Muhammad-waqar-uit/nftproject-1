@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { useNFTFunctionwriter, useNFTFunctionwriterERC } from "../utils/hooks";
 import { parseEther } from "viem";
+import { ethers } from "ethers";
+import { abi } from "../abis/0x52537989D0BBa01f7f18F0Ff4A410cb7BDE37D41";
 
 type Data = {
   _id: string;
@@ -28,6 +30,7 @@ interface Attribute {
 const NftDetailPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { address: ownerAddress, isConnected } = useAccount();
+  const [isLoader, setIsloader] = useState(false);
   const [data, setData] = useState<Data | null>();
 
   const params = useParams();
@@ -43,7 +46,22 @@ const NftDetailPage = () => {
 
   let { isLoading } = useWaitForTransaction({
     hash: approveErcdata?.hash,
+    onSuccess: async () => {
+      const tx = await writeAsync?.();
+      console.log("Transaction", tx?.hash);
+      let price = 0;
+      await axios
+        .put(
+          `https://nftproject-backend.vercel.app/nfts/updatenft/${data?._id}`,
+          {
+            price,
+            ownerAddress,
+          }
+        )
+        .then((result) => console.log(result.data));
+    },
   });
+
   let {
     writeAsync,
     data: buyfunctionData,
@@ -53,7 +71,7 @@ const NftDetailPage = () => {
     parseEther(String(data?.price || "0")),
   ]);
 
-  let { isLoading: isLoader } = useWaitForTransaction({
+  let { isLoading: loadernft } = useWaitForTransaction({
     hash: buyfunctionData?.hash,
     onSuccess: () => {
       toast("NFT Bought Successfully!", {
@@ -66,9 +84,21 @@ const NftDetailPage = () => {
         progress: undefined,
         theme: "light",
       });
+      setIsloader(false);
       window.location.reload();
     },
   });
+
+  const provider = new ethers.AlchemyProvider(
+    "sepolia",
+    import.meta.env.VITE_Alchemy
+  );
+  async function fetchApproval() {
+    const address = "0x52537989D0BBa01f7f18F0Ff4A410cb7BDE37D41";
+    const contract = new ethers.Contract(address, abi, provider);
+    const data = await contract.allowance(ownerAddress, address);
+    return String(data);
+  }
   // const { isConnected, address } = useAccount();
   async function fetchData() {
     try {
@@ -94,24 +124,9 @@ const NftDetailPage = () => {
 
   async function buyNFT() {
     try {
+      setIsloader(true);
       const tx1 = await ERCwriteAsync?.();
       console.log("Approved", tx1?.hash);
-
-      // Proceed with the second transaction only if the first one is successful
-      if (tx1) {
-        const tx = await writeAsync?.();
-        console.log("Transaction", tx?.hash);
-        let price = 0;
-        await axios
-          .put(
-            `https://nftproject-backend.vercel.app/nfts/updatenft/${data?._id}`,
-            {
-              price,
-              ownerAddress,
-            }
-          )
-          .then((result) => console.log(result.data));
-      }
     } catch (error: any) {
       console.log("Error>>", error.message);
       toast.error("Error Buying!", {
@@ -230,7 +245,9 @@ const NftDetailPage = () => {
                           onClick={buyNFT}
                           className="flex mt-4 ml-auto text-white bg-sky-400 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded"
                         >
-                          {isLoader || isLoading ? "Buying...." : "Buy NFT"}
+                          {isLoader || isLoading
+                            ? "wait Buying...."
+                            : "Buy NFT"}
                         </button>
                       )
                     )}
