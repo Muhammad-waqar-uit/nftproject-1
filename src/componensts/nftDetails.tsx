@@ -152,6 +152,12 @@ const NftDetailPage = () => {
                 <a>Owner:</a>
                 <a className="px-2">{data?.ownerAddress}</a>
               </p>
+              {data?.price !== 0 && (
+                <p className="leading-relaxed text-gray-400 flex flex-row">
+                  <a>Price:</a>
+                  <a className="px-2">{data?.price} ERC20</a>
+                </p>
+              )}
               <p className="leading-relaxed text-gray-400 flex flex-row">
                 Tx Hash:{" "}
                 <a
