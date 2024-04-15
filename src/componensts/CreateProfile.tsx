@@ -2,9 +2,11 @@ import { useState } from "react";
 import axios from "axios";
 import "../styles/createProfileModal.css";
 import createuser from "../utilities/createuser.png";
+import { useNavigate } from "react-router-dom";
 
 import { useAccount } from "wagmi";
 const CreateProfileModal = () => {
+  const navigate = useNavigate();
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   // const [walletAddress, setWalletAddress] = useState<any>();
@@ -23,7 +25,7 @@ const CreateProfileModal = () => {
         .then((result) => console.log(result));
       //   navigate("/");
       //   props.toggleModal(false);
-      window.location.reload();
+      navigate(`/`);
     } catch (error) {
       console.log(error);
     }

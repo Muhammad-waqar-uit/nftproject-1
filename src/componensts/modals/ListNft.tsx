@@ -75,6 +75,7 @@ const ListModal: React.FC<Props> = ({ isOpenProp, onClose, id, _id }) => {
     } catch (error: any) {
       console.log("Error>>", error.message);
       setNumber(0);
+      setIsLoader(false);
       toast.error("Error Listing!", {
         position: "top-right",
         autoClose: 5000,

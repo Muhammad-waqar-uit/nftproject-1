@@ -128,6 +128,7 @@ const NftDetailPage = () => {
         progress: undefined,
         theme: "light",
       });
+      setIsloader(false);
     }
   }
 
